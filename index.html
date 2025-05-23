@@ -1,0 +1,158 @@
+<html>
+<head>
+    <title>scu二课</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+            margin: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        #password-container, #content {
+            margin: 20px auto;
+            max-width: 90vw;
+        }
+        #password-input, #url-input {
+            width: 80%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 16px;
+        }
+        #password-btn, #generate-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        #password-btn:hover, #generate-btn:hover {
+            background-color: #45a049;
+        }
+        #error-message, #error-message-input {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        #qrcodes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .qrcode-box {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 45%;
+            max-width: 200px;
+        }
+        .qrcode-box h2 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+        }
+        .download-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .download-btn:hover {
+            background-color: #007B9A;
+        }
+        #content {
+            display: none;
+        }
+        #instructions {
+            margin-bottom: 20px;
+            color: #555;
+            text-align: left;
+            font-size: 14px;
+            max-width: 90vw;
+        }
+        @media (max-width: 600px) {
+            .qrcode-box {
+                width: 80%;
+                max-width: 150px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+            #url-input, #password-input {
+                width: 90%;
+                font-size: 14px;
+            }
+            #password-btn, #generate-btn {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" ontouchstart="">
+    <div id="password-container">
+        <label for="password-input">输入密码：</label><br>
+        <input type="password" id="password-input" placeholder="输入密码"><br>
+        <button id="password-btn">提交</button>
+        <div id="error-message" style="color: red; display: none;"></div>
+    </div>
+    <div id="content">
+        <h1>scu二课</h1>
+        <div id="instructions">
+            <p><strong>说明：</strong></p>
+            <p>1. 在下方输入框中输入相应二课的报名网址（URL）。</p>
+            <p>2. URL示例：https://zjczs.scu.edu.cn/ccylmp/pages/main/activity/activity-detail?id=252da0eac4d415626882c5309b1067e1</p>
+            <p>3. 点击“生成二维码”按钮，程序将生成签到和签退的二维码。</p>
+            <p>4. 点击“下载”按钮保存二维码为图片。</p>
+            <p>5.禁止分享此程序。</p>
+        </div>
+        <div id="input-container">
+            <label for="url-input">输入二课报名URL：</label><br>
+            <input type="text" id="url-input" placeholder="请参考说明输入"><br>
+            <button id="generate-btn">生成二维码</button>
+            <div id="error-message-input" style="color: red; margin-top: 10px;"></div>
+        </div>
+        <div id="qrcodes-container">
+            <div class="qrcode-box">
+                <h2> 签到码 </h2>
+                <div id="qrcode-in"></div>
+                <button class="download-btn" onclick="_dlQR('qrcode-in', 'qrcode-in.png')">下载</button>
+            </div>
+            <div class="qrcode-box">
+                <h2> 签退码 </h2>
+                <div id="qrcode-out"></div>
+                <button class="download-btn" onclick="_dlQR('qrcode-out', 'qrcode-out.png')">下载</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.onkeydown=function(_0x5e0b){if(_0x5e0b.keyCode===123||(_0x5e0b.ctrlKey&&_0x5e0b.shiftKey&&_0x5e0b.keyCode===73)||(_0x5e0b.ctrlKey&&_0x5e0b.keyCode===85))return false;};
+        document.getElementById('password-btn').addEventListener('click',function(){var _0x4f2c=document.getElementById('password-input').value;if(_0x4f2c!=='syywmddzml'){document.getElementById('error-message').innerHTML='密码错误，请重新输入。';document.getElementById('error-message').style.display='block';document.getElementById('content').style.display='none';}else{document.getElementById('error-message').style.display='none';document.getElementById('content').style.display='block';}});
+        document.getElementById('generate-btn').addEventListener('click',function(){var _0x2e1f=document.getElementById('url-input').value.trim();var _0x5b3c=document.getElementById('error-message-input');var _0x1a4b=_0x3f7d(_0x2e1f);if(!_0x1a4b){_0x5b3c.innerHTML='无法从URL中提取ID，请检查URL格式。';return;}if(_0x1a4b.length!==32||!/^[0-9a-f]{32}$/i.test(_0x1a4b)){_0x5b3c.innerHTML='提取的ID无效，请确保ID为32位十六进制。';return;}_0x5b3c.innerHTML='';var _0x4a2d='https://zjczs.scu.edu.cn/ccylmp/pages/main/index/signing?id='+_0x1a4b+'&type=in';var _0x3e5f='https://zjczs.scu.edu.cn/ccylmp/pages/main/index/signing?id='+_0x1a4b+'&type=out';document.getElementById('qrcode-in').innerHTML='';document.getElementById('qrcode-out').innerHTML='';new QRCode('qrcode-in',{text:_0x4a2d,width:150,height:150});new QRCode('qrcode-out',{text:_0x3e5f,width:150,height:150});});
+        function _0x3f7d(_0x1c2e){try{var _0x2b4f=new URL(_0x1c2e);var _0x5a3d=new URLSearchParams(_0x2b4f.search);return _0x5a3d.get('id');}catch(_0xe4b7){return null;}}
+        function _dlQR(_0x4c5a,_0x2f3b){var _0x1e4d=document.querySelector(`#${_0x4c5a} canvas`);if(_0x1e4d){var _0x3c2b=_0x1e4d.toDataURL('image/png');var _0x5d3e=document.createElement('a');_0x5d3e.href=_0x3c2b;_0x5d3e.download=_0x2f3b;_0x5d3e.click();}else{alert('请先生成二维码！');}}
+    </script>
+</body>
+</html>
